@@ -50,7 +50,7 @@ rights can be combined into access masks.
 
 ## C File
 
-[Access Masks](../OpenProcess/test4.c)
+[Access Masks](./scripts/test4.c)
 
 Example output:
 
@@ -144,7 +144,7 @@ CloseHandle(hProcess);
 ```
 
 ## C File
-[OpenProcess](./test3.c)
+[OpenProcess](./scripts/test3.c)
 
 Example Output:
 
@@ -318,9 +318,9 @@ causes an existing handle to automatically appear in every process.
 
 ## C Files
 
-[Parent](./parent.c)
+[Parent](./scripts/parent.c)
 
-[Child](./child.c)
+[Child](./scripts/child.c)
 
 ------------------------------------------------------------------------
 
@@ -460,7 +460,7 @@ address.
 
 ## C File
 
-[VirtualQueryEx](./test5.c)
+[VirtualQueryEx](./scripts/test5.c)
 
 ## Observed output
 
@@ -588,7 +588,7 @@ if (mbi.State == MEM_COMMIT)
 
 ## C File
 
-[VirtualQueryEx Enumeration](./test6.c)
+[VirtualQueryEx Enumeration](./scripts/test6.c)
 
 Output:
 
