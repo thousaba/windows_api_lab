@@ -28,5 +28,25 @@ int main() {
     printf("ntdll.dll base     : %p\n", hNtdll);
     printf("NtOpenProcess addr : %p\n", ntOpenProcess);
 
+    DWORD targetPid;
+
+    printf("Target PID: ");
+    scanf("%lu", &targetPid);
+
+    HANDLE hProcess = OpenProcess(
+        PROCESS_QUERY_LIMITED_INFORMATION,
+        FALSE,
+        targetPid
+    );
+
+    if (hProcess == NULL) {
+        printf("[-] OpenProcess failed. Error: %lu\n", GetLastError());
+        return 1;
+    }
+
+    printf("[+] OpenProcess succeeded: %p\n", hProcess);
+
+    CloseHandle(hProcess);
+
     return 0;
 }

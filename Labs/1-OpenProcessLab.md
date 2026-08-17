@@ -50,7 +50,7 @@ rights can be combined into access masks.
 
 ## C File
 
-[Access Masks](./scripts/test4.c)
+[Access Masks](../scripts/test4.c)
 
 Example output:
 
@@ -144,7 +144,7 @@ CloseHandle(hProcess);
 ```
 
 ## C File
-[OpenProcess](./scripts/test3.c)
+[OpenProcess](../scripts/test3.c)
 
 Example Output:
 
@@ -318,9 +318,9 @@ causes an existing handle to automatically appear in every process.
 
 ## C Files
 
-[Parent](./scripts/parent.c)
+[Parent](../scripts/parent.c)
 
-[Child](./scripts/child.c)
+[Child](../scripts/child.c)
 
 ------------------------------------------------------------------------
 
@@ -427,223 +427,109 @@ No inherited handle
 
 ------------------------------------------------------------------------
 
-# 6. Lab 5 --- VirtualQueryEx and Process Memory
+
+# 6. Lab 5 --- NtOpenProcess
+
+## C File 
+
+[NtOpenProcess](../scripts/test7.c)
+
+## Output
+
+```
+PS C:\temp_test\c_test\win_api\OpenProcess\scripts> .\openprocess_internals.exe
+OpenProcess -> NtOpenProcess Lab
+================================
+OpenProcess address: 00007FFBC1B82040
+ntdll.dll base     : 00007FFBC3000000
+NtOpenProcess addr : 00007FFBC3160830
+```
 
 ## What was tested
 
-The `VirtualQueryEx()` API was used to inspect the virtual memory
-layout of a target process.
+The address of NtOpenProcess was resolved from ntdll.dll using
+GetProcAddress().
 
-The program opened the target process with:
+The program then called OpenProcess() against the target process,
+while x64dbg was used to follow execution into the native API layer.
 
-```c
-HANDLE hProcess = OpenProcess(
-    PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-    FALSE,
-    targetPid
-);
-```
-MEMORY_BASIC_INFORMATION structure was then passed to:
+## x64dbg Observation
+
+![NtOpenProcess x64dbg](../screenshots/ntopenprocess.png)
+
+The NtOpenProcess entry point was reached at:
 
 ```
-VirtualQueryEx()
+ntdll.dll!NtOpenProcess
 ```
 
-The first query started at:
+The beginning of the syscall stub was observed as:
 
 ```
-LPCVOID lpaddress = NULL;
-```
-
-and returned information about the memory region containing that
-address.
-
-## C File
-
-[VirtualQueryEx](./scripts/test5.c)
-
-## Observed output
-
-```
-Virtual Memory Query Lab
-Enter the target process ID: 5800
-[+] Target PID     : 5800
-[+] Process Handle : 00000000000000D0
-Memory Region Information:
-Base Address: 0000000000000000
-Allocation Base: 0000000000000000
-Region Size: 2147352576 bytes
-State: 65536
-Protect: 1
-Type: 0
-Process handle closed successfully.
-```
-
-![VirtualQueryEx](../screenshots/virtualqueryex.png)
-
-## What was learned
-
-VirtualQueryEx() does not read the contents of process memory.
-
-Instead, it retrieves information about a region of virtual memory.
-
-The returned MEMORY_BASIC_INFORMATION structure contains information
-such as:
-
-```
-BaseAddress
-AllocationBase
-RegionSize
-State
-Protect
-Type
-```
-
-The important distinction is:
-
-```
-VirtualQueryEx()
-      |
-      v
-Memory region metadata
-```
-
-rather than:
-
-```
-VirtualQueryEx()
-      |
-      v
-Actual memory contents
-```
-
-This distinction becomes important when moving from memory layout
-inspection to APIs such as ReadProcessMemory().
-
-## Important observation
-
-The first query began at address NULL:
-
-```
-LPCVOID lpaddress = NULL;
-```
-
-Therefore the result describes the virtual memory region containing
-that starting address.
-
-A complete memory map requires repeatedly calling VirtualQueryEx()
-with the address of the next region:
-
-```
-lpaddress =
-    (PBYTE)mbi.BaseAddress +
-    mbi.RegionSize;
-```
-
-That was explored in a later version of the lab, where hundreds of
-memory regions were enumerated.
-
-The key concept is:
-
-```
-Process Virtual Address Space
-        |
-        +-- Region
-        +-- Region
-        +-- Region
-        +-- Region
-        +-- ...
-```
-
-A process's virtual address space is therefore composed of many
-individual regions rather than being one continuous memory block.
-
-## 5.2 --- Enumerating Virtual Memory Regions
-
-### What was tested
-
-The previous test queried a single virtual memory region.
-
-In this test, `VirtualQueryEx()` was called repeatedly to enumerate the
-target process's virtual address space region by region.
-
-The enumeration started at:
-
-```c
-PBYTE lpaddress = NULL;
-```
-After each successful query, the address was advanced to the beginning
-of the next region:
-
-```
-lpaddress =
-    (PBYTE)mbi.BaseAddress + mbi.RegionSize;
-```
-
-Only committed regions were displayed:
-
-```
-if (mbi.State == MEM_COMMIT)
-```
-
-## C File
-
-[VirtualQueryEx Enumeration](./scripts/test6.c)
-
-Output:
-
-![VirtualQueryEnum](../screenshots/virtualqueryenum.png)
-
-## What was learned
-
-VirtualQueryEx() can be used repeatedly to walk through the virtual
-address space of another process.
-
-Each successful query describes one memory region through the
-MEMORY_BASIC_INFORMATION structure.
-
-The important values used in this lab were:
-
-```
-BaseAddress
-RegionSize
-State
-Protect
-```
-
-
-This allows the program to move from one region to the next.
-
-Conceptually:
-
-```
-Virtual Address Space
-
-Region 0
-    |
-    | BaseAddress + RegionSize
-    v
-Region 1
-    |
-    | BaseAddress + RegionSize
-    v
-Region 2
-    |
-    | BaseAddress + RegionSize
-    v
-Region 3
-    |
-    v
+mov r10, rcx
+mov eax, 26
 ...
+syscall
 ```
 
-The experiment demonstrated that a process's virtual address space is
-composed of many separate memory regions rather than one continuous
-memory block.
+The syscall instruction was then stepped over and execution returned
+to the user-mode ntdll code.
 
-The experiment demonstrated that a process's virtual address space is
-composed of many separate memory regions rather than one continuous
-memory block.
+## What was learned
 
-------------------------------------------------------------------------
+The important result of this lab was understanding that
+OpenProcess() is not the lowest-level operation involved in opening
+another process.
 
+The observed execution path was:
+
+```
+OpenProcess()
+    |
+    v
+kernelbase.dll
+    |
+    v
+ntdll.dll
+    |
+    v
+NtOpenProcess
+    |
+    v
+syscall
+    |
+    v
+Windows Kernel
+```
+
+This gives a concrete debugger-based example of the transition from a
+documented Win32 API to the Native API and then to the system-call
+boundary.
+
+The syscall number (0x26 in this specific Windows build) was also
+observed in the stub. This value is an implementation detail and should
+not be treated as a constant across Windows versions.
+
+## Why this matters for the project
+
+This lab establishes the layer model that will be used throughout the
+rest of the Windows API research:
+
+```
+Win32 API
+    ↓
+Native API
+    ↓
+syscall
+    ↓
+kernel
+```
+
+For detection engineering, this distinction is useful because an API
+name such as OpenProcess() describes the caller-facing interface,
+while the actual operating-system operation continues through lower
+layers.
+
+The goal is therefore not to memorize NtOpenProcess or its syscall
+number, but to understand where the Win32 API ends and the native
+system-call mechanism begins

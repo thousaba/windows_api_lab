@@ -22,8 +22,6 @@ The goal is not to memorize APIs. The goal is to understand:
 
 ## Phase 1 — Process & Handle Fundamentals
 
-### Completed
-
 - [x] Access Masks
 - [x] `OpenProcess()`
 - [x] Process `HANDLE`
@@ -33,9 +31,6 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] Handle inheritance
 - [x] `VirtualQueryEx()`
 - [x] Virtual memory region enumeration
-
-### Planned
-
 - [ ] `ReadProcessMemory()`
 - [ ] `WriteProcessMemory()`
 - [ ] `VirtualAllocEx()`
@@ -158,73 +153,6 @@ Execution
 
 Not every occurrence of these APIs is malicious. The detection objective is to understand the context surrounding the operation.
 
----
-
-# Lab Structure
-
-Each completed lab follows the same general structure:
-
-```text
-1. What was tested
-2. C implementation
-3. Observed behavior
-4. Windows mechanism
-5. Telemetry
-6. Detection implications
-```
-
-The experiments are intentionally small. The purpose is to isolate one Windows primitive at a time before combining multiple primitives into larger process manipulation techniques.
-
----
-
-# Repository Structure
-
-```text
-Windows-Process-Internals-Lab/
-│
-├── README.md
-│
-├── OpenProcess/
-│   ├── test1.c
-│   ├── test2.c
-│   ├── test3.c
-│   ├── test4.c
-│   ├── test5.c
-│   └── test6.c
-│
-├── screenshots/
-│
-├── docs/
-│   ├── lab-notes.md
-│   └── detection-notes.md
-│
-└── future/
-    └── roadmap.md
-```
-
----
-
-# Current Progress
-
-The current learning path has reached:
-
-```text
-Access Masks
-     ↓
-OpenProcess()
-     ↓
-Process HANDLE
-     ↓
-bInheritHandle
-     ↓
-Parent → Child Handle Inheritance
-     ↓
-VirtualQueryEx()
-     ↓
-Virtual Memory Enumeration
-```
-
-The next step is to continue from **process memory enumeration** toward actual memory access and the underlying Windows memory mechanisms.
 
 ---
 
