@@ -1,47 +1,5 @@
-# Windows Process Internals Lab
 
-> Hands-on Windows internals study focused on process handles, access
-> masks, virtual memory inspection, handle inheritance, and the Win32 →
-> Native API → syscall path.
->
-> **Purpose:** understand Windows process manipulation from a defensive
-> / detection-engineering perspective by observing API behavior directly
-> in C and x64dbg.
-
-------------------------------------------------------------------------
-
-## 1. Objective
-
-The goal of this lab series was not to build an injection framework or
-exploit anything.
-
-The goal was to answer a simpler but more important question:
-
-> **"When Windows code interacts with another process, what actually
-> happens underneath the Win32 API?"**
-
-The study followed this model:
-
-``` text
-Win32 API
-    ↓
-kernel32 / kernelbase
-    ↓
-ntdll Native API
-    ↓
-syscall
-    ↓
-Windows kernel
-    ↓
-Process / Handle / Memory objects
-```
-
-Each concept was tested with a small C program and, where useful,
-inspected with x64dbg.
-
-------------------------------------------------------------------------
-
-# 2. Lab 1 --- Access Masks
+# 1. Access Masks
 
 ## What was tested
 
@@ -113,7 +71,7 @@ Sysmon Event ID 10 and its `GrantedAccess` field.
 
 ------------------------------------------------------------------------
 
-# 3. Lab 2 --- OpenProcess and the Process Handle
+# 1.2 OpenProcess and the Process Handle
 
 ## Test
 
@@ -240,7 +198,7 @@ which is fundamental to understanding later process manipulation APIs.
 
 ------------------------------------------------------------------------
 
-# 4. Lab 3 --- `bInheritHandle` and Handle Inheritance
+# 1.3 `bInheritHandle` and Handle Inheritance
 
 ## What was tested
 
@@ -324,7 +282,7 @@ causes an existing handle to automatically appear in every process.
 
 ------------------------------------------------------------------------
 
-# 5. Lab 4 --- Actual Handle Inheritance
+# 1.4 Actual Handle Inheritance
 
 To demonstrate the effect of bInheritHandle, a parent/child process
 test was created.
@@ -428,7 +386,7 @@ No inherited handle
 ------------------------------------------------------------------------
 
 
-# 6. Lab 5 --- NtOpenProcess
+# 1.5 NtOpenProcess
 
 ## C File 
 

@@ -1,4 +1,4 @@
-# 1. --- `ReadProcessMemory()`
+# 3. ReadProcessMemory
 
 ## What was tested
 

@@ -31,10 +31,10 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] Handle inheritance
 - [x] `VirtualQueryEx()`
 - [x] Virtual memory region enumeration
-- [ ] `ReadProcessMemory()`
-- [ ] `WriteProcessMemory()`
-- [ ] `VirtualAllocEx()`
-- [ ] `VirtualProtectEx()`
+- [x] `ReadProcessMemory()`
+- [x] `WriteProcessMemory()`
+- [x] `VirtualAllocEx()`
+- [x] `VirtualProtectEx()`
 - [ ] `OpenProcessToken()`
 - [ ] Process access rights
 - [ ] Thread access rights
