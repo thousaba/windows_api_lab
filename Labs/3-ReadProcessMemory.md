@@ -150,7 +150,7 @@ hexadecimal representation.
 
 ---
 
-# 2. --- Remote `ReadProcessMemory()`
+# 2. Remote `ReadProcessMemory()`
 
 ## What was tested
 
@@ -185,7 +185,6 @@ Enter the target process ID: 5800
 ```
 
 ![ReadProcessMemoryRemote](../screenshots/readprocessmemory_remote.png)
-
 
 ## What was learned
 

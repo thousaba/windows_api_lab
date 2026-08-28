@@ -35,7 +35,7 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] `WriteProcessMemory()`
 - [x] `VirtualAllocEx()`
 - [x] `VirtualProtectEx()`
-- [ ] `OpenProcessToken()`
+- [x] `OpenProcessToken()`
 - [ ] Process access rights
 - [ ] Thread access rights
 - [ ] `CreateRemoteThread()`

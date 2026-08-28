@@ -1,5 +1,6 @@
 # 6. VirtualProtectEx and Memory Protection Modification
-What was tested
+
+## What was tested
 
 The VirtualProtectEx() API was used to modify the page protection attributes of an existing virtual memory region inside a target process (Notepad.exe, PID 1736).
 
