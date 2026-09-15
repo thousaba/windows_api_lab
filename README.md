@@ -36,9 +36,11 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] `VirtualAllocEx()`
 - [x] `VirtualProtectEx()`
 - [x] `OpenProcessToken()`
-- [ ] Process access rights
-- [ ] Thread access rights
-- [ ] `CreateRemoteThread()`
+- [x] `CreateRemoteThread()`
+- [x] `Static API-CreateRemoteThread()`
+- [ ] `Dynamic API-CreateRemoteThread()`
+- [ ] `API Hashing-CreateRemoteThread()`
+
 
 ---
 
