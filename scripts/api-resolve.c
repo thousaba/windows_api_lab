@@ -14,6 +14,7 @@ int main() {
     printf("#define HASH_OPENPROCESS        0x%08X\n", HashString("OpenProcess"));
     printf("#define HASH_VIRTUALALLOCEX     0x%08X\n", HashString("VirtualAllocEx"));
     printf("#define HASH_WRITEPROCESSMEMORY 0x%08X\n", HashString("WriteProcessMemory"));
+    printf("#define HASH_VIRTUALPROTECTEX   0x%08X\n", HashString("VirtualProtectEx"));
     printf("#define HASH_CREATEREMOTETHREAD 0x%08X\n", HashString("CreateRemoteThread"));
     return 0;
 }

@@ -23,33 +23,77 @@ The goal is not to memorize APIs. The goal is to understand:
 ## Phase 1 — Process & Handle Fundamentals
 
 - [x] Access Masks
-- [x] `OpenProcess()`
-- [x] Process `HANDLE`
-- [x] `GetProcessId()`
-- [x] `CloseHandle()`
-- [x] `bInheritHandle`
+- [x] OpenProcess()
+- [x] Process `HANDLE
+- [x] GetProcessId()
+- [x] CloseHandle()
+- [x] bInheritHandle
 - [x] Handle inheritance
-- [x] `VirtualQueryEx()`
+- [x] VirtualQueryEx()
 - [x] Virtual memory region enumeration
-- [x] `ReadProcessMemory()`
-- [x] `WriteProcessMemory()`
-- [x] `VirtualAllocEx()`
-- [x] `VirtualProtectEx()`
-- [x] `OpenProcessToken()`
-- [x] `CreateRemoteThread()`
-- [x] `Static API-CreateRemoteThread()`
-- [ ] `Dynamic API-CreateRemoteThread()`
-- [ ] `API Hashing-CreateRemoteThread()`
+- [x] ReadProcessMemory()
+- [x] WriteProcessMemory()
+- [x] VirtualAllocEx()
+- [x] VirtualProtectEx()
+- [x] OpenProcessToken()
+- [x] CreateRemoteThread()
+- [x] Static API-CreateRemoteThread()
+- [x] Dynamic API-CreateRemoteThread()
+- [x] API Hashing-CreateRemoteThread()
 
+---
+
+# Phase 1b — Thread Fundamentals
+ 
+- [ ] Thread HANDLE
+- [ ] OpenThread()
+- [ ] GetThreadId() / GetCurrentThreadId()
+- [ ] SuspendThread() / ResumeThread()
+- [ ] GetThreadContext() / SetThreadContext()
+- [ ] CONTEXT structure (Rip/Eip, register set)
+- [ ] QueueUserAPC()
+- [ ] Alertable state / alertable wait
+- [ ] SleepEx() / WaitForSingleObjectEx()
+
+---
+
+# Phase 1c — Process Creation & Section Fundamentals
+
+- [ ] CreateProcess() / CreateProcessA/W
+- [ ] CREATE_SUSPENDED flag
+- [ ] PROCESS_INFORMATION / STARTUPINFO structures
+- [ ] CreateFileMapping() / MapViewOfFile()
+- [ ] NtUnmapViewOfSection()
+- [ ] NtCreateSection() / NtMapViewOfSection()
+- [ ] Image base relocation kavramı (ASLR ile ilişkisi)
+
+---
+
+# Phase 1d — Transacted File / NTFS TxF Fundamentals
+
+- [ ] CreateFileTransacted()
+- [ ] CreateTransaction()
+- [ ] RollbackTransaction() / CommitTransaction()
+- [ ] NtCreateProcessEx()
+
+---
+
+# Phase 1e — DLL / Module Loading Fundamentals
+
+- [ ] LoadLibrary() / LoadLibraryA/W
+- [ ] GetModuleHandle()
+- [ ] GetProcAddress()
+- [ ] DLL_PROCESS_ATTACH ve DllMain akışı
+- [ ] Reflective loading kavramı
 
 ---
 
 # Phase 2 — Windows Memory Internals
 
 - [ ] Virtual address space
-- [ ] `MEMORY_BASIC_INFORMATION`
+- [ ] MEMORY_BASIC_INFORMATION
 - [ ] Memory protection
-- [ ] `MEM_COMMIT` / `MEM_RESERVE` / `MEM_FREE`
+- [ ] MEM_COMMIT / MEM_RESERVE / MEM_FREE
 - [ ] Image / Private / Mapped memory
 - [ ] PE image mappings
 - [ ] VAD concepts
@@ -60,30 +104,14 @@ The goal is not to memorize APIs. The goal is to understand:
 # Phase 3 — Native API & System Calls
 
 - [ ] Win32 API → Native API relationship
-- [ ] `NtOpenProcess`
-- [ ] `NtAllocateVirtualMemory`
-- [ ] `NtWriteVirtualMemory`
-- [ ] `NtProtectVirtualMemory`
-- [ ] `NtCreateThreadEx`
+- [ ] NtOpenProcess
+- [ ] NtAllocateVirtualMemory
+- [ ] NtWriteVirtualMemory
+- [ ] NtProtectVirtualMemory
+- [ ] NtCreateThreadEx
 - [ ] Syscall stubs
 - [ ] x64 calling convention
 - [ ] System Service Numbers
-
-The intended model is:
-
-```text
-Win32 API
-    ↓
-kernel32 / kernelbase
-    ↓
-ntdll.dll
-    ↓
-Native API
-    ↓
-syscall
-    ↓
-Windows Kernel
-```
 
 ---
 
@@ -101,16 +129,6 @@ The Windows primitives will later be combined to understand common process manip
 - [ ] Process Herpaderping
 - [ ] Early Bird Injection
 
-Each technique will be studied from three perspectives:
-
-```text
-Mechanism
-    ↓
-Windows API / Internals
-    ↓
-Detection / Telemetry
-```
-
 ---
 
 # Phase 5 — Detection Engineering
@@ -125,36 +143,6 @@ For each technique:
 - [ ] Develop detection logic
 - [ ] Test false positives
 - [ ] Document limitations
-
-Example process-manipulation chain:
-
-```text
-Process A
-    |
-    | OpenProcess()
-    | access rights
-    v
-Process B
-    |
-    | VirtualAllocEx()
-    v
-Process B memory
-    |
-    | WriteProcessMemory()
-    v
-Process B memory
-    |
-    | VirtualProtectEx()
-    v
-Executable memory
-    |
-    | CreateRemoteThread()
-    v
-Execution
-```
-
-Not every occurrence of these APIs is malicious. The detection objective is to understand the context surrounding the operation.
-
 
 ---
 

