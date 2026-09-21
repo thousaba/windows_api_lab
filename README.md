@@ -45,10 +45,10 @@ The goal is not to memorize APIs. The goal is to understand:
 
 # Phase 1b — Thread Fundamentals
  
-- [ ] Thread HANDLE
-- [ ] OpenThread()
-- [ ] GetThreadId() / GetCurrentThreadId()
-- [ ] SuspendThread() / ResumeThread()
+- [x] Thread HANDLE
+- [x] OpenThread()
+- [x] GetThreadId() / GetCurrentThreadId()
+- [x] SuspendThread() / ResumeThread()
 - [ ] GetThreadContext() / SetThreadContext()
 - [ ] CONTEXT structure (Rip/Eip, register set)
 - [ ] QueueUserAPC()
@@ -65,7 +65,7 @@ The goal is not to memorize APIs. The goal is to understand:
 - [ ] CreateFileMapping() / MapViewOfFile()
 - [ ] NtUnmapViewOfSection()
 - [ ] NtCreateSection() / NtMapViewOfSection()
-- [ ] Image base relocation kavramı (ASLR ile ilişkisi)
+- [ ] Image base relocation concept
 
 ---
 
@@ -83,8 +83,8 @@ The goal is not to memorize APIs. The goal is to understand:
 - [ ] LoadLibrary() / LoadLibraryA/W
 - [ ] GetModuleHandle()
 - [ ] GetProcAddress()
-- [ ] DLL_PROCESS_ATTACH ve DllMain akışı
-- [ ] Reflective loading kavramı
+- [ ] DLL_PROCESS_ATTACH ve DllMain flow
+- [ ] Reflective loading concept
 
 ---
 
