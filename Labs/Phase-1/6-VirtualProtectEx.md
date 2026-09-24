@@ -28,7 +28,7 @@ BOOL protectResult = VirtualProtectEx(
 
 ## C Files
 
-[VirtualProtectEx](../scripts/virtualprotectex.c)
+[VirtualProtectEx](../../scripts/virtualprotectex.c)
 
 ## Observed output
 
@@ -48,7 +48,7 @@ Enter target process ID: 1736
 [+] Process handle closed successfully.
 ```
 
-![VirtualProtectEx](../screenshots/virtualprotectex.png)
+![VirtualProtectEx](../../screenshots/virtualprotectex.png)
 
 
 ## What was learned
@@ -114,4 +114,4 @@ Memory verification using Process Hacker / System Informer confirmed:
 
 * Data Verification: ASCII readout displaying Hello, VirtualProtectEx!.
 
-![VirtualProtectEx](../screenshots/virtualprotectex_prochacker%20(1).png)
+![VirtualProtectEx](../../screenshots/virtualprotectex_prochacker%20(1).png)

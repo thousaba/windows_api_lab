@@ -49,8 +49,8 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] OpenThread()
 - [x] GetThreadId() / GetCurrentThreadId()
 - [x] SuspendThread() / ResumeThread()
-- [ ] GetThreadContext() / SetThreadContext()
-- [ ] CONTEXT structure (Rip/Eip, register set)
+- [x] GetThreadContext() / SetThreadContext()
+- [x] CONTEXT structure (Rip/Eip, register set)
 - [ ] QueueUserAPC()
 - [ ] Alertable state / alertable wait
 - [ ] SleepEx() / WaitForSingleObjectEx()

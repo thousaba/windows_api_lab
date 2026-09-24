@@ -30,11 +30,11 @@ HANDLE hThread = CreateRemoteThread(
 
 ## C File 
 
-[CreateRemoteThread](../scripts/CreateRemoteThread.c)
+[CreateRemoteThread](../../scripts/CreateRemoteThread.c)
 
 ## Observed Output
 
-![CreateRemoteThread](../screenshots/createRemoteThread-1.png)
+![CreateRemoteThread](../../screenshots/createRemoteThread-1.png)
 
 
 ## Debugger & Memory Analysis (x64dbg & System Informer)
@@ -52,7 +52,7 @@ Attaching x64dbg prior to execution and inspecting base address 0x000001780AFD00
 000001780AFD0003 | C3 | ret
 ```
 
-![crt-x64dbg](../screenshots/createRemoteThread-2.png)
+![crt-x64dbg](../../screenshots/createRemoteThread-2.png)
 
 The 3x NOP instructions (0x90) execute without altering processor state, while RET (0xC3) gracefully terminates the thread execution context without causing an access violation (0xC0000005) or crashing the host target process.
 
@@ -80,7 +80,7 @@ Inspecting the Threads tab of Notepad.exe during execution showed:
 
 Legitimate threads in Windows typically start within exported functions of signed system DLLs (such as ntdll.dll!RtlUserThreadStart or kernel32.dll!BaseThreadInitThunk). A thread starting directly in a private, unbacked memory region serves as a primary behavioral indicator of remote thread injection.
 
-![crt-system-informer](../screenshots/createRemoteThread-3.png)
+![crt-system-informer](../../screenshots/createRemoteThread-3.png)
 
 ## Telemetry & Detection Engineering Notes
 
@@ -88,7 +88,7 @@ Sysmon Event ID 8 Correlation
 
 The execution generated a corresponding Sysmon Event ID 8 (CreateRemoteThread) event:
 
-![crt-sysmon](../screenshots/createRemoteThread-4.png)
+![crt-sysmon](../../screenshots/createRemoteThread-4.png)
 
 
 

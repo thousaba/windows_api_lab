@@ -17,7 +17,7 @@ BOOL result = OpenProcessToken(
 
 ## C Files
 
-[OpenProcessToken](../scripts/openprocesstoken.c)
+[OpenProcessToken](../../scripts/openprocesstoken.c)
 
 ## Observed output
 
@@ -107,11 +107,11 @@ GetTokenInformation(
 
 ## C Files
 
-[GetTokenInformation](../scripts/gettokeninformation.c)
+[GetTokenInformation](../../scripts/gettokeninformation.c)
 
 ## Observed output
 
-![GetTokenInformation](../screenshots/gettokeninformation.png)
+![GetTokenInformation](../../screenshots/gettokeninformation.png)
 
 ## What was learned
 
@@ -328,7 +328,7 @@ The implementation follows the classic token duplication and impersonation workf
 
 ## C File 
 
-[Impersonate Token](../scripts/impersonatetoken.c)
+[Impersonate Token](../../scripts/impersonatetoken.c)
 
 ### Token Impersonation Test Output
 Execution of `impersonatetoken.exe` targeting `winlogon.exe` (PID 1036):
@@ -425,7 +425,7 @@ Spawned Child Process (PID: 22004) under NT AUTHORITY\SYSTEM Context
 
 ## C Source Code
 
-![CreateProcessToken](../scripts/create_system_proc.c)
+![CreateProcessToken](../../scripts/create_system_proc.c)
 
 ## Observed Output
 
@@ -443,7 +443,7 @@ Enter target SYSTEM PID (e.g., winlogon.exe PID): 1036
 
 Spawned cmd.exe Context (whoami /priv):
 
-![CreateProcessToken](../screenshots/create-process-token-1.png)
+![CreateProcessToken](../../screenshots/create-process-token-1.png)
 
 ## Key Architectural Learnings
 
@@ -467,7 +467,7 @@ Test 1: Querying Protected LSA Hive (HKLM\SECURITY)
 
 Standard Administrators are denied access to the HKLM\SECURITY registry hive. Executing reg query under the spawned SYSTEM shell successfully enumerated the internal subkeys:
 
-![Outputs](../screenshots/create-process-token-2.png)
+![Outputs](../../screenshots/create-process-token-2.png)
 
 Test 2: Accessing System Volume Information Directory
 
@@ -475,7 +475,7 @@ The C:\System Volume Information directory contains system restore points, shado
 
 Executing a directory listing under the SYSTEM primary process token successfully bypassed NTFS boundaries:
 
-![Outputs](../screenshots/create-process-token-3.png)
+![Outputs](../../screenshots/create-process-token-3.png)
 
 
 ## Key Security Takeaways

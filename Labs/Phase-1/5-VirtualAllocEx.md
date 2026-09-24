@@ -32,7 +32,7 @@ Hello, Notepad!
 
 ## C Files
 
-[VirtualAllocEx_Write](../scripts/virtualallocex_write.c)
+[VirtualAllocEx_Write](../../scripts/virtualallocex_write.c)
 
 ## Observed output
 
@@ -52,7 +52,7 @@ Enter target process ID: 1736
 [+] Process handle closed successfully.
 ```
 
-![VirtualAllocEx](../screenshots/virtualallocex.png)
+![VirtualAllocEx](../../screenshots/virtualallocex.png)
 
 ## What was learned
 
@@ -121,4 +121,4 @@ Address          Hex Values                                         ASCII
 0000000000000000  48 65 6c 6c 6f 2c 20 4e 6f 74 65 70 61 64 21 00  Hello, Notepad!.
 ```
 
-![VirtualAllocEx-ProcHacker](../screenshots/virtualallocex_prochacker.png)
+![VirtualAllocEx-ProcHacker](../../screenshots/virtualallocex_prochacker.png)

@@ -8,7 +8,7 @@ rights can be combined into access masks.
 
 ## C File
 
-[Access Masks](../scripts/test4.c)
+[Access Masks](../../scripts/test4.c)
 
 Example output:
 
@@ -26,7 +26,7 @@ PROCESS_VM_READ | PROCESS_VM_WRITE:
 PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION:
 0x0038
 ```
-![Access Masks](../screenshots/access-masks.png)
+![Access Masks](../../screenshots/access-masks.png)
 
 ## What was learned
 
@@ -102,7 +102,7 @@ CloseHandle(hProcess);
 ```
 
 ## C File
-[OpenProcess](../scripts/test3.c)
+[OpenProcess](../../scripts/test3.c)
 
 Example Output:
 
@@ -276,9 +276,9 @@ causes an existing handle to automatically appear in every process.
 
 ## C Files
 
-[Parent](../scripts/parent.c)
+[Parent](../../scripts/parent.c)
 
-[Child](../scripts/child.c)
+[Child](../../scripts/child.c)
 
 ------------------------------------------------------------------------
 
@@ -310,7 +310,7 @@ Observed:
     [CHILD] SUCCESS! PID read through inherited handle: 5800
 ```
 
-![Parent False](../screenshots/parent_true.png)
+![Parent False](../../screenshots/parent_true.png)
 
 
 The child successfully used the inherited handle.
@@ -330,7 +330,7 @@ Observed:
     [CHILD] FAILED! Handle invalid. Error Code: 6
 ```
 
-![Parent False](../screenshots/parent_false.png)
+![Parent False](../../screenshots/parent_false.png)
 
 6 corresponds to:
 
@@ -390,7 +390,7 @@ No inherited handle
 
 ## C File 
 
-[NtOpenProcess](../scripts/test7.c)
+[NtOpenProcess](../../scripts/test7.c)
 
 ## Output
 
@@ -413,7 +413,7 @@ while x64dbg was used to follow execution into the native API layer.
 
 ## x64dbg Observation
 
-![NtOpenProcess x64dbg](../screenshots/ntopenprocess.png)
+![NtOpenProcess x64dbg](../../screenshots/ntopenprocess.png)
 
 The NtOpenProcess entry point was reached at:
 

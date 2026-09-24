@@ -31,7 +31,7 @@ address.
 
 ## C File
 
-[VirtualQueryEx](../scripts/test5.c)
+[VirtualQueryEx](../../scripts/test5.c)
 
 ## Observed output
 
@@ -50,7 +50,7 @@ Type: 0
 Process handle closed successfully.
 ```
 
-![VirtualQueryEx](../screenshots/virtualqueryex.png)
+![VirtualQueryEx](../../screenshots/virtualqueryex.png)
 
 ## What was learned
 
@@ -159,11 +159,11 @@ if (mbi.State == MEM_COMMIT)
 
 ## C File
 
-[VirtualQueryEx Enumeration](../scripts/test6.c)
+[VirtualQueryEx Enumeration](../../scripts/test6.c)
 
 Output:
 
-![VirtualQueryEnum](../screenshots/virtualqueryenum.png)
+![VirtualQueryEnum](../../screenshots/virtualqueryenum.png)
 
 ## What was learned
 

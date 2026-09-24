@@ -26,9 +26,9 @@ AFTER_WRITE
 
 ## C Files
 
-[WriteProcessMemory Target](../scripts/write-target.c)
+[WriteProcessMemory Target](../../scripts/write-target.c)
 
-[WriteProcessMemory](../scripts/writeprocessmemory.c)
+[WriteProcessMemory](../../scripts/writeprocessmemory.c)
 
 ## Observed output
 
@@ -173,7 +173,7 @@ Process, write-target.exe (17588), Query limited information, VM operation, VM w
 
 This matches `0x1000 + 0x0008 + 0x0020 = 0x1028` exactly — the same value Sysmon logged. Since Process Hacker reads the handle table directly from the kernel object, independent of Sysmon, this confirms the extra bit is granted by the kernel's access check itself, not added by Sysmon's event generation.
 
-![WriteProcessMemory ProcHacker](../screenshots/writeprocessmemory_proc-hacker.png)
+![WriteProcessMemory ProcHacker](../../screenshots/writeprocessmemory_proc-hacker.png)
 
 ### Takeaway
 

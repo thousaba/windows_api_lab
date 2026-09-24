@@ -41,7 +41,7 @@ BOOL result = ReadProcessMemory(
 
 ## C File
 
-[ReadProcessMemory](../scripts/test8.c)
+[ReadProcessMemory](../../scripts/test8.c)
 
 
 ## Observed Output
@@ -58,7 +58,7 @@ ReadProcessMemory Lab
 48 45 4C 4C 4F 5F 4D 45 4D 4F 52 59 00
 ```
 
-![ReadProcessMemory](../screenshots/readprocessmemory.png)
+![ReadProcessMemory](../../screenshots/readprocessmemory.png)
 
 
 ## What was learned
@@ -163,7 +163,7 @@ bytes from the target process.
 
 ## C File
 
-[Remote ReadProcessMemory](../scripts/test9.c)
+[Remote ReadProcessMemory](../../scripts/test9.c)
 
 ## Observed Output
 
@@ -184,7 +184,7 @@ Enter the target process ID: 5800
 [+] Process handle closed successfully.
 ```
 
-![ReadProcessMemoryRemote](../screenshots/readprocessmemory_remote.png)
+![ReadProcessMemoryRemote](../../screenshots/readprocessmemory_remote.png)
 
 ## What was learned
 
