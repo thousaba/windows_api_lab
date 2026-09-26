@@ -1,4 +1,4 @@
-# 6. Reading Thread Context (GetThreadContext)
+# Reading Thread Context (GetThreadContext)
 
 ## What was tested
 

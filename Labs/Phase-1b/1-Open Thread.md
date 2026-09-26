@@ -1,4 +1,4 @@
-# 1. Thread ID vs Process ID
+# Thread ID vs Process ID
 
 ## What was tested
 
@@ -37,7 +37,7 @@ not carry over to the thread API family.
 
 ---
 
-# 2. Thread Pseudo-Handle
+# Thread Pseudo-Handle
 
 ## What was tested
 
@@ -78,7 +78,7 @@ than a pseudo-handle.
 
 ---
 
-# 3. Enumerating a Process's Threads
+# Enumerating a Process's Threads
 
 ## What was tested
 
@@ -145,7 +145,7 @@ of these TIDs and opening a real, non-pseudo handle to it via
 
 ---
 
-# 4. Opening a Real Thread Handle
+# Opening a Real Thread Handle
 
 ## What was tested
 

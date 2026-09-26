@@ -1,4 +1,4 @@
-# 7. Thread Execution Hijacking (SetThreadContext) — Full Shellcode Injection
+# Thread Execution Hijacking (SetThreadContext) — Full Shellcode Injection
 
 ## What was tested
 

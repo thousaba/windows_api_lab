@@ -1,4 +1,4 @@
-# 5. Suspending and Resuming a Thread
+# Suspending and Resuming a Thread
 
 ## What was tested
 
