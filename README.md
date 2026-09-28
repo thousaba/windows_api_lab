@@ -59,12 +59,9 @@ The goal is not to memorize APIs. The goal is to understand:
 
 # Phase 1c — Process Creation & Section Fundamentals
 
-- [ ] CreateProcess() / CreateProcessA/W
-- [ ] CREATE_SUSPENDED flag
-- [ ] PROCESS_INFORMATION / STARTUPINFO structures
-- [ ] CreateFileMapping() / MapViewOfFile()
-- [ ] NtUnmapViewOfSection()
-- [ ] NtCreateSection() / NtMapViewOfSection()
+- [x] CreateFileMapping() / MapViewOfFile()
+- [x] NtUnmapViewOfSection()
+- [x] NtCreateSection() / NtMapViewOfSection()
 - [ ] Image base relocation concept
 
 ---

@@ -15,6 +15,8 @@ The analysis focused on the following stages:
 
 The analysis was performed using x64dbg against both the injector process and the target `notepad.exe` process.
 
+[QueueUserAPC Source Code](../../scripts/apc.c)
+
 ---
 
 ## 2. Target Process Creation
