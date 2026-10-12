@@ -62,7 +62,8 @@ The goal is not to memorize APIs. The goal is to understand:
 - [x] CreateFileMapping() / MapViewOfFile()
 - [x] NtUnmapViewOfSection()
 - [x] NtCreateSection() / NtMapViewOfSection()
-- [ ] Image base relocation concept
+- [x] Section Mapping with RtlUserCreatTread()
+- [x] Section Mapping with QueueUserAPC
 
 ---
 
