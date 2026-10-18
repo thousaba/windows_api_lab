@@ -67,9 +67,8 @@ The goal is not to memorize APIs. The goal is to understand:
 # Phase 1d — DLL & Module Loading Fundamentals
 
 - [x] LoadLibrary() / GetModuleHandle() / GetProcAddress()
-- [ ] DllMain / DLL_PROCESS_ATTACH lifecycle
-- [ ] IAT / EAT, static imports vs dynamic resolution
-- [ ] Module-load telemetry (Sysmon EID 7)
+- [x] DllMain / DLL_PROCESS_ATTACH lifecycle
+- [x] Module-load telemetry (Sysmon EID 7 + Sysmon EID 11)
 
 **Deliverable:** extend the Phase 1 API-hashing test with a short note on how a reflective loader would evade EID 7, and what would still catch it.
 
