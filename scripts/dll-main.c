@@ -13,6 +13,7 @@ int main(void)
 
     printf("DLL loaded. Base address: %p\n", (void *)hDll);
     printf("File Created");
+    getchar();
 
     FreeLibrary(hDll);
     printf("DLL unloaded.\n");

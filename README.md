@@ -20,133 +20,171 @@ The goal is not to memorize APIs. The goal is to understand:
 
 ---
 
-# Phase 1 — Process & Handle Fundamentals
+# windows_api_lab — Roadmap
 
-- [x] Access Masks
-- [x] OpenProcess()
-- [x] Process HANDLE
-- [x] GetProcessId()
-- [x] CloseHandle()
-- [x] bInheritHandle / Handle inheritance
-- [x] VirtualQueryEx() / Virtual memory region enumeration
-- [x] ReadProcessMemory() / WriteProcessMemory()
-- [x] VirtualAllocEx() / VirtualProtectEx()
-- [x] OpenProcessToken()
-- [x] CreateRemoteThread() — static API, dynamic API, API hashing variants
+## Phase 1 — Process & Handle APIs
 
-**Deliverable:** done — `windows_api_lab` repo, Part 1 (static IAT method) committed with x64dbg analysis + Splunk "CHAINED_ACCESS_REFLECTIVE_INJECTION" detection.
+- [x] `OpenProcess()`
+- [x] `GetProcessId()`
+- [x] `CloseHandle()`
+- [x] Access masks
+- [x] Handle inheritance
+- [x] `OpenProcessToken()`
+- [x] `ReadProcessMemory()` / `WriteProcessMemory()`
+- [x] `VirtualQueryEx()`
+- [x] `VirtualAllocEx()` / `VirtualProtectEx()`
+- [x] `CreateRemoteThread()`
 
----
-
-# Phase 1b — Thread Fundamentals (mostly complete — finish the loop)
-
-- [x] Thread HANDLE
-- [x] OpenThread()
-- [x] GetThreadId() / GetCurrentThreadId()
-- [x] SuspendThread() / ResumeThread()
-- [x] GetThreadContext() / SetThreadContext() — **done**: msfvenom shellcode injected into notepad.exe via thread hijacking, got a working shell
-- [x] QueueUserAPC()
-- [x] Alertable state / alertable wait (SleepEx() / WaitForSingleObjectEx())
-
-**Deliverable:** one short writeup comparing thread hijacking (done) vs APC injection (todo) — same target, same lab notebook format (Teknik/Amaç/API/Mekanizma/Telemetry/Detection). Don't move to 1c until this comparison exists, even if it's short.
+**Goal:** Understand process handles, access rights, cross-process operations, and their observable behavior.
 
 ---
 
-# Phase 1c — Process Creation & Section Fundamentals
+## Phase 1b — Thread APIs
 
-- [x] CreateFileMapping() / MapViewOfFile()
-- [x] NtUnmapViewOfSection()
-- [x] NtCreateSection() / NtMapViewOfSection()
-- [x] Section mapping with RtlCreateUserThread()
-- [x] Section mapping with QueueUserAPC
+- [x] `OpenThread()`
+- [x] `GetThreadId()` / `GetCurrentThreadId()`
+- [x] `SuspendThread()` / `ResumeThread()`
+- [x] `GetThreadContext()` / `SetThreadContext()`
+- [x] `QueueUserAPC()`
+- [x] `SleepEx()` / `WaitForSingleObjectEx()`
 
-**Deliverable:** a minimal process hollowing PoC against a suspended benign target, with the Sysmon/ETW evidence it produces.
-
----
-
-# Phase 1d — DLL & Module Loading Fundamentals
-
-- [x] LoadLibrary() / GetModuleHandle() / GetProcAddress()
-- [x] DllMain / DLL_PROCESS_ATTACH lifecycle
-- [x] Module-load telemetry (Sysmon EID 7 + Sysmon EID 11)
-
-**Deliverable:** extend the Phase 1 API-hashing test with a short note on how a reflective loader would evade EID 7, and what would still catch it.
+**Goal:** Understand thread objects, thread state, context manipulation, APCs, and remote execution primitives.
 
 ---
 
-# Phase 2 — Windows Virtual Memory Internals (scope this down)
+## Phase 1c — Section & Mapping APIs
 
-Keep this phase tied to Phase 1c/1d findings — don't study memory internals in the abstract.
+- [x] `CreateFileMapping()`
+- [x] `MapViewOfFile()`
+- [x] `NtCreateSection()`
+- [x] `NtMapViewOfSection()`
+- [x] `NtUnmapViewOfSection()`
+- [x] Section Mapping with `RtlCreateUserThread()` and `QueueUserAPC()`
 
-- [ ] MEMORY_BASIC_INFORMATION fields you actually use in VirtualQueryEx output
-- [ ] MEM_COMMIT / MEM_RESERVE / MEM_FREE, protection transitions
-- [ ] Image vs Private vs Mapped memory — enough to label a region correctly
-- [ ] VAD — conceptual overview only (System Informer already shows this)
 
-**Deliverable:** none standalone — fold this into the Phase 1c/1d writeups as a "what the memory layout looked like" section, rather than a separate report.
-
----
-
-# Phase 3 — x64, PE & Debugging Foundations
-
-## 3.1 x64 (scope to what's needed to read x64dbg traces, not full assembly mastery — this overlaps your RE track)
-
-- [ ] Calling convention, argument registers, shadow space
-- [ ] Stack frames, prologues/epilogues — enough to recognize them, not to hand-write them
-
-## 3.2 PE and debugging
-
-- [ ] PE headers/sections/imports/exports — as needed per lab, not exhaustively upfront
-- [ ] x64dbg workflow for correlating API args → memory → thread state
-
-**Deliverable:** none standalone — this phase is infrastructure for Phase 1c/1d/4/5 labs, not its own report.
+**Goal:** Understand sections, shared memory, mapped views, and how section objects differ from ordinary private allocations.
 
 ---
 
-# Phase 3.5 — Memory-Safety & Code-Reuse Concepts (ROP)
+## Phase 1d — DLL & Module APIs
 
-- [ ] DEP/NX, ASLR, stack canaries, CFG/CET — what each mitigation blocks and doesn't
-- [ ] Memory corruption / crash triage fundamentals
-- [ ] Build a ROP chain against an intentionally vulnerable local lab binary
-- [ ] Analyze how the mitigations above change what the chain has to do
+- [x] `LoadLibrary()`
+- [x] `GetModuleHandle()`
+- [x] `GetProcAddress()`
+- [x] `DllMain`
+- [x] DLL lifecycle
+- [x] Dynamic API resolution
+- [x] API hashing
 
-**Deliverable:** one writeup — trigger a stack overflow in a vulnerable lab binary, build a working ROP chain that bypasses at least one mitigation (e.g. DEP via ROP), document the chain and what each mitigation would have blocked if enabled.
-
----
-
-# Phase 4 — Native API & System Call Internals
-
-- [ ] Win32 → Native API mapping for the APIs you've already used (NtOpenProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx)
-- [ ] Syscall stub / SSN — inspect one in a disassembler
-- [ ] User-mode hooking visibility limits
-- [ ] Direct/indirect syscalls — conceptual, tied to a telemetry comparison
-
-**Deliverable:** rewrite one earlier test (e.g. the API-hashing one) to call Nt* directly instead of Win32, and document what telemetry changes vs stays the same.
+**Goal:** Understand how Windows loads modules and resolves APIs.
 
 ---
 
-# Phase 5 — Process Behavior Analysis
+# Phase 2 — Virtual Memory APIs & Internals
 
-- [ ] Remote thread injection — already covered, consolidate notes
-- [ ] Thread hijacking — already covered (Phase 1b), consolidate notes
-- [ ] APC injection — once Phase 1b todo is done
-- [ ] Process hollowing — once Phase 1c is done
-- [ ] Process Doppelgänging / Herpaderping / Ghosting — conceptual comparison, Sysmon EID 25 coverage
+- [x] `VirtualQuery()` / `VirtualQueryEx()`
+- [x] `VirtualAlloc()` / `VirtualAllocEx()`
+- [x] `VirtualFree()` / `VirtualFreeEx()`
+- [x] `MEMORY_BASIC_INFORMATION`
+- [x] `MEM_COMMIT` / `MEM_RESERVE` / `MEM_FREE`
+- [x] `MEM_IMAGE` / `MEM_PRIVATE` / `MEM_MAPPED`
+- [x] Page protections
 
-**Deliverable:** one consolidated "injection technique matrix" (technique / APIs / telemetry / detection confidence) — this can likely reuse/extend [[attack-coverage-matrix]] rather than being a new artifact.
+**Goal:** Connect the memory APIs already used in Phase 1 to what Windows actually creates in a process address space.
 
 ---
 
-# Phase 6 — Detection Engineering & Final Report (merged with former Phase 7)
+# Phase 3 — Process Creation APIs
 
-This replaces the old separate "Phase 6: Malware Analysis" and "Phase 7: Final Integrated Project" — they covered the same ground twice.
+- [x] `CreateProcess()`
+- [ ] `CreateProcessW()`
+- [ ] `CreateProcessAsUser()`
+- [ ] `CreateProcessWithTokenW()`
+- [ ] `STARTUPINFO` / `PROCESS_INFORMATION`
+- [ ] Parent/child process relationships
+- [ ] Process creation flags
+- [ ] Environment and command-line handling
 
-- [ ] For each behavior studied in Phase 5, write and tune a Splunk detection with stated FP/FN evaluation
-- [ ] Map each behavior to MITRE ATT&CK
-- [ ] Document Sysmon/ETW sensor coverage and known blind spots per technique
-- [ ] Pick 2–3 of the strongest behaviors (not all of them) and write them up as the final portfolio report, linking internals → behavior → detection → confidence
+**Lab:** Create processes with different flags and inspect the resulting process/thread objects and telemetry.
 
-**Deliverable:** the final portfolio report itself. This is the actual output of the whole repo — everything above feeds into it.
+---
+
+# Phase 4 — File & I/O APIs
+
+- [ ] `CreateFile()`
+- [ ] `ReadFile()`
+- [ ] `WriteFile()`
+- [ ] `SetFilePointer()` / `SetFilePointerEx()`
+- [ ] `GetFileSizeEx()`
+- [ ] `DeleteFile()`
+- [ ] `MoveFile()` / `MoveFileEx()`
+- [ ] File HANDLEs and access/share modes
+- [ ] Basic asynchronous I/O concept
+
+**Lab:** Build a small file-inspection utility and correlate operations with Windows/Sysmon telemetry.
+
+---
+
+# Phase 5 — Registry APIs
+
+- [ ] `RegOpenKeyEx()`
+- [ ] `RegCreateKeyEx()`
+- [ ] `RegQueryValueEx()`
+- [ ] `RegSetValueEx()`
+- [ ] `RegDeleteValue()`
+- [ ] `RegCloseKey()`
+- [ ] Registry HANDLEs and access masks
+
+**Lab:** Read/write controlled test keys and observe Sysmon EID 12/13/14.
+
+---
+
+# Phase 6 — Service & SCM APIs
+
+- [ ] `OpenSCManager()`
+- [ ] `OpenService()`
+- [ ] `CreateService()`
+- [ ] `StartService()`
+- [ ] `ControlService()`
+- [ ] `QueryServiceStatusEx()`
+- [ ] `DeleteService()`
+- [ ] Service HANDLEs and access rights
+
+**Lab:** Create and manage a harmless test service and examine SCM/service telemetry.
+
+---
+
+# Phase 7 — Token & Security APIs
+
+Build on `OpenProcessToken()` from Phase 1.
+
+- [ ] `GetTokenInformation()`
+- [ ] `LookupPrivilegeValue()`
+- [ ] `AdjustTokenPrivileges()`
+- [ ] `DuplicateTokenEx()`
+- [ ] Token types and impersonation levels
+- [ ] Integrity levels
+- [ ] Privileges vs access rights
+- [ ] Security descriptors / ACLs — fundamentals only
+
+**Goal:** Understand how Windows represents process identity and authorization.
+
+---
+
+# Phase 8 — Native API Layer
+
+Only after the Win32 API foundation is established.
+
+- [ ] Win32 → `ntdll` mapping
+- [ ] `NtOpenProcess()`
+- [ ] `NtAllocateVirtualMemory()`
+- [ ] `NtReadVirtualMemory()` / `NtWriteVirtualMemory()`
+- [ ] `NtProtectVirtualMemory()`
+- [ ] `NtCreateThreadEx()`
+- [ ] Compare equivalent Win32 and Native API operations
+- [ ] Syscall transition — conceptual overview
+
+**Goal:** Take APIs already understood at the Win32 layer and follow them one layer deeper.
 
 ---
 
